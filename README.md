@@ -1,3 +1,5 @@
+![workflow](https://github.com/decitre/python-flexpolyline-pbapi/actions/workflows/test.yml/badge.svg)
+
 # FlexPolyline and HERE Polyline
 
 This is a fork of the python implementation of the [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
