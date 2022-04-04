@@ -32,9 +32,9 @@ Coordinate order is `(lat, lng[, width])`.
 >>> decode(polyline_string, pbapi=True)
 ```
 
-Decodes a HERE polyline string into an array of coordinates `(lat, lng[, width])`. `width` is epected to be one of `DW`, `HW`, `CW`.
+Decodes a HERE polyline string into an array of coordinates `(lat, lng[, width])`.
 
-Note that `width` is epected to be one of `DW`, `HW`, `CW`.
+Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 #### Examples
 
