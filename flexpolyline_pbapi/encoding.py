@@ -4,6 +4,7 @@
 # License-Filename: LICENSE
 
 from collections import namedtuple
+from typing import Iterable, Tuple, Generator, Union, Callable
 import warnings
 
 __all__ = ['ABSENT', 'LEVEL', 'ALTITUDE', 'ELEVATION', 'encode', 'dict_encode', 'THIRD_DIM_MAP']
@@ -22,10 +23,12 @@ CUSTOM2 = 7
 
 THIRD_DIM_MAP = {ALTITUDE: 'alt', ELEVATION: 'elv', LEVEL: 'lvl', CUSTOM1: 'cst1', CUSTOM2: 'cst2'}
 
+PBAPI_WIDTHS = {"DW": ".D", "CW": ".C", "HW": ".H"}
+
 PolylineHeader = namedtuple('PolylineHeader', 'precision,third_dim,third_dim_precision')
 
 
-def encode_unsigned_varint(value, appender):
+def encode_unsigned_varint(value: int, appender: Callable[[str], None], pbapi: bool=False) -> None:
     """Uses veriable integer encoding to encode an unsigned integer.
     Returns the encoded string."""
     while value > 0x1F:
@@ -35,7 +38,7 @@ def encode_unsigned_varint(value, appender):
     appender(ENCODING_TABLE[value])
 
 
-def encode_scaled_value(value, appender):
+def encode_scaled_value(value: int, appender: Callable[[str], None], pbapi: bool=False) -> None:
     """Transform a integer `value` into a variable length sequence of characters.
     `appender` is a callable where the produced chars will land to"""
     negative = value < 0
@@ -44,10 +47,10 @@ def encode_scaled_value(value, appender):
     if negative:
         value = ~value
 
-    encode_unsigned_varint(value, appender)
+    encode_unsigned_varint(value, appender, pbapi)
 
 
-def encode_header(appender, precision, third_dim, third_dim_precision):
+def encode_header(appender, precision, third_dim, third_dim_precision) -> None:
     """Encode the `precision`, `third_dim` and `third_dim_precision` into one
     encoded char"""
     if precision < 0 or precision > 15:
@@ -65,38 +68,48 @@ def encode_header(appender, precision, third_dim, third_dim_precision):
     encode_unsigned_varint(res, appender)
 
 
-def encode(coordinates, precision=5, third_dim=ABSENT, third_dim_precision=0):
+def encode(coordinates, precision=5, third_dim=ABSENT, third_dim_precision=0, pbapi: bool=False) -> str:
     """Encode a sequence of lat,lng or lat,lng(,{third_dim}).
     `precision`: how many decimal digits of precision to store the latitude and longitude.
     `third_dim`: type of the third dimension if present in the input.
-    `third_dim_precision`: how many decimal digits of precision to store the third dimension."""
+    `third_dim_precision`: how many decimal digits of precision to store the third dimension.
+    `pbapi`: set to True to encode HERE Polyline (In Maintenance).
+    """
     multiplier_degree = 10 ** precision
     multiplier_z = 10 ** third_dim_precision
 
     last_lat = last_lng = last_z = 0
 
     res = []
-    appender = res.append
-    encode_header(appender, precision, third_dim, third_dim_precision)
+    appender: Callable[[str], None] = res.append
+    if not pbapi:
+        encode_header(appender, precision, third_dim, third_dim_precision)
 
     for location in coordinates:
         lat = int(round(location[0] * multiplier_degree))
-        encode_scaled_value(lat - last_lat, appender)
+        encode_scaled_value(lat - last_lat, appender, pbapi)
         last_lat = lat
 
         lng = int(round(location[1] * multiplier_degree))
-        encode_scaled_value(lng - last_lng, appender)
+        encode_scaled_value(lng - last_lng, appender, pbapi)
         last_lng = lng
 
-        if third_dim:
+        if third_dim and not pbapi:
             z = int(round(location[2] * multiplier_z))
             encode_scaled_value(z - last_z, appender)
             last_z = z
+        elif pbapi:
+            try:
+                if len(location) > 2:
+                    appender(PBAPI_WIDTHS[location[2]])
+            except KeyError:
+                raise ValueError(f"third_dim not one of: {', '.join(PBAPI_WIDTHS.keys())}")
 
     return ''.join(res)
 
 
-def _dict_to_tuple(coordinates, third_dim):
+def _dict_to_tuple(coordinates: Iterable[dict],
+                   third_dim: int) -> Generator:
     """Convert a sequence of dictionaries to a sequence of tuples"""
     if third_dim:
         third_dim_key = THIRD_DIM_MAP[third_dim]

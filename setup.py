@@ -11,19 +11,18 @@ with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 class sdist(_sdist):
     def run(self):
-        shutil.copy('../LICENSE', 'LICENSE')
+        shutil.copy('LICENSE', 'LICENSE')
         _sdist.run(self)
 
-
 setup(
-    name='flexpolyline',
-    description='Flexible Polyline encoding: a lossy compressed representation of a list of coordinate pairs or triples',
+    name='python-flexpolyline-pbapi',
+    description='Flexible Polyline encoding (PBAPI extension)',
     long_description=long_description,
     long_description_content_type='text/markdown',
     version='0.1.0',
     author='HERE Europe B.V.',
     url='https://here.com',
-    packages=['flexpolyline'],
+    packages=['flexpolyline_pbapi'],
     # SPDX-License-Identifier: MIT
     license='MIT',
     classifiers=[

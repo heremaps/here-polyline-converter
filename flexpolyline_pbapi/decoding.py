@@ -4,8 +4,11 @@
 # License-Filename: LICENSE
 
 from collections import namedtuple
+from typing import Union
 
-from .encoding import THIRD_DIM_MAP, FORMAT_VERSION
+from .encoding import THIRD_DIM_MAP, FORMAT_VERSION, ENCODING_TABLE, PBAPI_WIDTHS
+
+PBAPI_REV_WIDTHS = dict(map(reversed, PBAPI_WIDTHS.items()))
 
 __all__ = [
     'decode', 'dict_decode', 'iter_decode',
@@ -43,12 +46,12 @@ def get_third_dimension(encoded):
     return header.third_dim
 
 
-def decode_char(char):
+def decode_char(char: str, pbapi: bool=False) -> Union[int, str]:
     """Decode a single char to the corresponding value"""
     char_value = ord(char)
 
     try:
-        value = DECODING_TABLE[char_value - 45]
+        value = ENCODING_TABLE.index(char) if pbapi else DECODING_TABLE[char_value - 45]
     except IndexError:
         raise ValueError('Invalid encoding')
     if value < 0:
@@ -64,11 +67,19 @@ def to_signed(value):
     return value
 
 
-def decode_unsigned_values(encoded):
+def decode_unsigned_values(encoded: str, pbapi: bool=False):
     """Return an iterator over encoded unsigned values part of an `encoded` polyline"""
     result = shift = 0
 
+    dot_encountered = False
     for char in encoded:
+        if dot_encountered:
+            yield f".{char}"
+            dot_encountered = False
+            continue
+        elif pbapi and char == ".":
+            dot_encountered = True
+            continue
         value = decode_char(char)
 
         result |= (value & 0x1F) << shift
@@ -82,31 +93,46 @@ def decode_unsigned_values(encoded):
         raise ValueError('Invalid encoding')
 
 
-def iter_decode(encoded):
+def iter_decode(encoded: str, pbapi: bool=False):
     """Return an iterator over coordinates. The number of coordinates are 2 or 3
     depending on the polyline content."""
 
     last_lat = last_lng = last_z = 0
-    decoder = decode_unsigned_values(encoded)
+    decoder = decode_unsigned_values(encoded, pbapi)
 
-    header = decode_header(decoder)
-    factor_degree = 10.0 ** header.precision
-    factor_z = 10.0 ** header.third_dim_precision
-    third_dim = header.third_dim
+    if not pbapi:
+        header = decode_header(decoder)
+        factor_degree = 10.0 ** header.precision
+        factor_z = 10.0 ** header.third_dim_precision
+        third_dim = header.third_dim
+    else:
+        factor_degree, factor_z, third_dim = 10.0 ** 5, 1, None
 
+    encountered_last_lat = False
     while True:
         try:
-            last_lat += to_signed(next(decoder))
-        except StopIteration:
-            return  # sequence completed
+            if not encountered_last_lat:
+                last_lat += to_signed(next(decoder))
+            else:
+                encountered_last_lat = False
 
-        try:
             last_lng += to_signed(next(decoder))
 
-            if third_dim:
-                last_z += to_signed(next(decoder))
-                yield (last_lat / factor_degree, last_lng / factor_degree, last_z / factor_z)
-            else:
-                yield (last_lat / factor_degree, last_lng / factor_degree)
+            if not pbapi:
+                if third_dim:
+                    last_z += to_signed(next(decoder))
+                    yield last_lat / factor_degree, last_lng / factor_degree, last_z / factor_z
+                else:
+                    yield last_lat / factor_degree, last_lng / factor_degree
+            elif pbapi:
+                third_value = next(decoder)
+                if isinstance(third_value, int):
+                    yield last_lat / factor_degree, last_lng / factor_degree
+                    last_lat += to_signed(third_value)
+                    encountered_last_lat = True
+                else:
+                    width = PBAPI_REV_WIDTHS[third_value]
+                    yield last_lat / factor_degree, last_lng / factor_degree, width
+
         except StopIteration:
-            raise ValueError("Invalid encoding. Premature ending reached")
+            return  # sequence completed
