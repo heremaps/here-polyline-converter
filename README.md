@@ -66,6 +66,16 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 [(50.10228, 8.69821, 'CW'), (50.10201, 8.69567), (50.10063, 8.6915, 'DW'), (50.09878, 8.68752)]
 ```
 
+<!-- to release:
+python setup.py sdist bdist_wheel
+ls -l dist/*
+git tag v0.2.0
+git remote add origin git@github.com:decitre/python-flexpolyline-pbapi.git`
+git push -u origin master v0.2.0
+python sdist bdist_wheel
+twine upload --skip-existing dist/*
+-->
+
 ## License
 
 Copyright (C) 2019 HERE Europe B.V.
