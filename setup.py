@@ -12,7 +12,7 @@ setup(
     description="Flexible Polyline encoding (PBAPI extension)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.1.1",
+    version="0.2.0",
     author="decitre",
     packages=["flexpolyline_pbapi"],
     # SPDX-License-Identifier: MIT

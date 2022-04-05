@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 # License-Filename: LICENSE
 
-from .encoding import _dict_to_tuple, ABSENT, ALTITUDE, LEVEL, ELEVATION, CUSTOM1, CUSTOM2
-from .decoding import THIRD_DIM_MAP, get_third_dimension
+from .encoding import _dict_to_tuple, ABSENT, ALTITUDE, LEVEL, ELEVATION, CUSTOM1, CUSTOM2, THIRD_DIM_MAP
+from .decoding import get_third_dimension
 
 from .decoding import iter_decode
 from .encoding import encode
@@ -44,3 +44,36 @@ def dict_decode(encoded: str):
     """Return an list of coordinates dicts. The dict contains always the keys 'lat', 'lng' and
     depending on the polyline can contain a third key ('elv', 'lvl' or 'alt')."""
     return list(iter_dict_decode(encoded))
+
+
+def encode_pbapi(coordinates: Iterable) -> str:
+    """Encode a sequence of lat,lng or lat,lng(,{width}).
+    `width`: Additional 3rd dimension precising the width for upcoming segments (CW, HW or DW).
+    """
+    return encode(coordinates, pbapi=True)
+
+
+def decode_pbapi(encoded: str) -> Sequence[Union[Tuple[str, str], Tuple[str, str, str]]]:
+    """Return a list of coordinates. The number of coordinates are 2 or 3
+    depending on the polyline content.
+    The third dimension is specifying the corridor width for upcoming segments (CW, HW or DW).
+    """
+    return decode(encoded, pbapi=True)
+
+
+def reencode_flex_to_pbapi(encoded: str) -> str:
+    """Return a HERE Polyline out of a flexpolyline encoded string. The third dimension is ignored and the width is left empty.
+    """
+    iter_decoded = iter_decode(encoded)
+    reencoded = encode_pbapi(iter_decoded)
+    return reencoded
+
+
+def reencode_pbapi_to_flex(encoded: str) -> str:
+    """Return a flexible polyline with no third dimension out of a HERE Polyline encoded string.
+    The HERE Polyline potential width changes are ignored: The resulting corridor will be of constant width, expressed
+    in HERE geocoding & Search API in a specific request parameter.
+    """
+    decoded = decode_pbapi(encoded)
+    reencoded = encode(decoded)
+    return reencoded

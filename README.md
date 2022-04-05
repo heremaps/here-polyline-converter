@@ -2,15 +2,14 @@
 
 # FlexPolyline and HERE Polyline
 
-This is a fork of the python implementation of the [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
-format.
-It has been developed to support the HERE polyline encoding used by 
+This is Python extension of the [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
+codec library to support the HERE polyline format used by 
 [HERE Places (Search) API](https://developer.here.com/documentation/places/dev_guide/topics/guide.html)
 for the [`compressedRoute`](https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding) requests parameter.
 
-Use the original repo [heremaps/flexible-polyline](https://github.com/heremaps/flexible-polyline/tree/master/python) 
-if you only need to encode/decode polylines used in 
-[HERE Geocoding & Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/implementing-route.html) or [HERE Routing API](https://developer.here.com/documentation/routing-api/dev_guide/index.html).
+Note that the HERE Places (Search) API is in maintenance. This Python package can be used to test applications being migrated to 
+the newer [HERE Geocoding & Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html).
+
 
 ## Install
 
@@ -22,52 +21,49 @@ $ pip install python-flexpolyline-pbapi
 
 
 ```
->>> encode(iterable, pbapi=True)
+>>> reencode_pbapi_to_flex(here_polyline_string)
+```
+
+Transforms a HERE polyline string into a flexible polyline string. 
+The HERE Polyline segments width changes are ignored: The resulting corridor will be of constant width, expressed
+in HERE geocoding & Search API as a specific request 
+parameter [`width`](https://developer.here.com/documentation/geocoding-search-api/migration_guide/migration-places/topics/location-context.html#route-and-compressed-route).
+
+```
+>>> encode_pbapi(iterable)
 ```
 
 Encodes a list (or iterator) of coordinates to the corresponding HERE polyline string representation. 
 Coordinate order is `(lat, lng[, width])`. 
 
 ```
->>> decode(polyline_string, pbapi=True)
+>>> decode_pbapi(here_polyline_string)
 ```
 
 Decodes a HERE polyline string into an array of coordinates `(lat, lng[, width])`.
+
+```
+>>> encode_pbapi(iterable)
+```
 
 Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 #### Examples
 
 ```python
-import flexpolyline_pbapi as fp
+>>> import flexpolyline_pbapi as fp
+>>> here_polyline = "oz5xJ67i1B1B7PzIhaxL7Y"
+>>> flexible_polyline = fp.reencode_pbapi_to_flex(here_polyline)
+>>> flexible_polyline
+'BFoz5xJ67i1B1B7PzIhaxL7Y'
 
-example = [
-    (50.1022829, 8.6982122),
-    (50.1020076, 8.6956695),
-    (50.1006313, 8.6914960),
-    (50.0987800, 8.6875156),
-]
+>>> points = [ (50.1022829, 8.6982122), (50.1020076, 8.6956695), (50.1006313, 8.6914960), (50.0987800, 8.6875156) ]
+>>> fp.encode_pbapi(points)
+'oz5xJ67i1B1B7PzIhaxL7Y'
 
-print(fp.encode(example, pbapi=True))
-```
-
-**Output**: `oz5xJ67i1B1B7PzIhaxL7Y`.
-
-
-```python
-import flexpolyline_pbapi as fp
-
-print(fp.dict_decode("oz5xJ67i1B.C1B7PzIha.DxL7Y", pbapi=True))
-```
-
-**Output**:
-
-```
-[
-    (50.10228, 8.69821, 'CW'), 
-    (50.10201, 8.69567), 
-    (50.10063, 8.6915, 'DW')
-]
+>>> here_polyline = "oz5xJ67i1B.C1B7PzIha.DxL7Y"
+>>> fp.decode_pbapi(here_polyline)
+[(50.10228, 8.69821, 'CW'), (50.10201, 8.69567), (50.10063, 8.6915, 'DW'), (50.09878, 8.68752)]
 ```
 
 ## License

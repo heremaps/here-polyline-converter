@@ -4,10 +4,10 @@
 # License-Filename: LICENSE
 
 from collections import namedtuple
-from typing import Iterable, Tuple, Generator, Union, Callable
+from typing import Iterable, Generator, Callable, Dict
 import warnings
 
-__all__ = ['ABSENT', 'LEVEL', 'ALTITUDE', 'ELEVATION', 'encode', 'dict_encode', 'THIRD_DIM_MAP']
+__all__ = ['ABSENT', 'LEVEL', 'ALTITUDE', 'ELEVATION', 'encode', 'THIRD_DIM_MAP']
 
 ENCODING_TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
 
@@ -23,7 +23,7 @@ CUSTOM2 = 7
 
 THIRD_DIM_MAP = {ALTITUDE: 'alt', ELEVATION: 'elv', LEVEL: 'lvl', CUSTOM1: 'cst1', CUSTOM2: 'cst2'}
 
-PBAPI_WIDTHS = {"DW": ".D", "CW": ".C", "HW": ".H"}
+PBAPI_WIDTHS: Dict[str, str] = {"DW": ".D", "CW": ".C", "HW": ".H"}
 
 PolylineHeader = namedtuple('PolylineHeader', 'precision,third_dim,third_dim_precision')
 
@@ -68,7 +68,7 @@ def encode_header(appender, precision, third_dim, third_dim_precision) -> None:
     encode_unsigned_varint(res, appender)
 
 
-def encode(coordinates, precision=5, third_dim=ABSENT, third_dim_precision=0, pbapi: bool=False) -> str:
+def encode(coordinates: Iterable, precision=5, third_dim=ABSENT, third_dim_precision=0, pbapi: bool=False) -> str:
     """Encode a sequence of lat,lng or lat,lng(,{third_dim}).
     `precision`: how many decimal digits of precision to store the latitude and longitude.
     `third_dim`: type of the third dimension if present in the input.

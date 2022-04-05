@@ -6,14 +6,11 @@
 from collections import namedtuple
 from typing import Union
 
-from .encoding import THIRD_DIM_MAP, FORMAT_VERSION, ENCODING_TABLE, PBAPI_WIDTHS
+from .encoding import FORMAT_VERSION, ENCODING_TABLE, PBAPI_WIDTHS
 
 PBAPI_REV_WIDTHS = dict(map(reversed, PBAPI_WIDTHS.items()))
 
-__all__ = [
-    'decode', 'dict_decode', 'iter_decode',
-    'get_third_dimension', 'decode_header', 'PolylineHeader'
-]
+__all__ = [ 'iter_decode', 'get_third_dimension', 'decode_header', 'PolylineHeader' ]
 
 DECODING_TABLE = [
     62, -1, -1, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1,
@@ -125,14 +122,18 @@ def iter_decode(encoded: str, pbapi: bool=False):
                 else:
                     yield last_lat / factor_degree, last_lng / factor_degree
             elif pbapi:
-                third_value = next(decoder)
-                if isinstance(third_value, int):
+                try:
+                    third_value = next(decoder)
+                except StopIteration:
                     yield last_lat / factor_degree, last_lng / factor_degree
-                    last_lat += to_signed(third_value)
-                    encountered_last_lat = True
                 else:
-                    width = PBAPI_REV_WIDTHS[third_value]
-                    yield last_lat / factor_degree, last_lng / factor_degree, width
+                    if isinstance(third_value, int):
+                        yield last_lat / factor_degree, last_lng / factor_degree
+                        last_lat += to_signed(third_value)
+                        encountered_last_lat = True
+                    else:
+                        width = PBAPI_REV_WIDTHS[third_value]
+                        yield last_lat / factor_degree, last_lng / factor_degree, width
 
         except StopIteration:
             return  # sequence completed
