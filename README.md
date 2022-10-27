@@ -1,9 +1,9 @@
 ![workflow](https://github.com/decitre/python-flexpolyline-pbapi/actions/workflows/test.yml/badge.svg)
 
-# FlexPolyline and HERE Polyline
+# HERE FlexPolyline and (Legacy) Polyline
 
-This is Python extension of the [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
-codec library to support the HERE polyline format used by 
+This is Python extension of the HERE [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
+codec library to support the legacy polyline format used by 
 [HERE Places (Search) API](https://developer.here.com/documentation/places/dev_guide/topics/guide.html)
 for the [`compressedRoute`](https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding) requests parameter.
 
@@ -65,16 +65,6 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 >>> fp.decode_pbapi(here_polyline)
 [(50.10228, 8.69821, 'CW'), (50.10201, 8.69567), (50.10063, 8.6915, 'DW'), (50.09878, 8.68752)]
 ```
-
-<!-- to release:
-python setup.py sdist bdist_wheel
-ls -l dist/*
-git tag v0.2.0
-git remote add origin git@github.com:decitre/python-flexpolyline-pbapi.git`
-git push -u origin master v0.2.0
-python sdist bdist_wheel
-twine upload --skip-existing dist/*
--->
 
 ## License
 
