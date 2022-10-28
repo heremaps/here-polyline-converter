@@ -50,6 +50,7 @@ def decode_char(char: str, pbapi: bool=False) -> Union[int, str]:
     try:
         value = ENCODING_TABLE.index(char) if pbapi else DECODING_TABLE[char_value - 45]
     except IndexError:
+        # @cvetter: Would you actually get an index error for char_value < 45? Wouldnt it just take the backwards?
         raise ValueError('Invalid encoding')
     if value < 0:
         raise ValueError('Invalid encoding')
@@ -71,6 +72,7 @@ def decode_unsigned_values(encoded: str, pbapi: bool=False):
     dot_encountered = False
     for char in encoded:
         if dot_encountered:
+            # @cvetter: Yielding a string in a function that sounds like it should only yield integers is a bit weird
             yield f".{char}"
             dot_encountered = False
             continue
