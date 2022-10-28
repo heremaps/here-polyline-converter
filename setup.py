@@ -8,6 +8,8 @@ with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 
 setup(
+    # @cvetter: Is this the name we want to go with? Isn't it weird for a python package to have "python" in the name? and pbapi is not very easy to discover
+    #           I would also not call this an "extension", since it is more of a tool focused on converting data into the new format.
     name="python-flexpolyline-pbapi",
     description="Flexible Polyline encoding (PBAPI extension)",
     long_description=long_description,

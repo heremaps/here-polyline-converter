@@ -2,6 +2,7 @@
 
 # HERE FlexPolyline and (Legacy) Polyline
 
+// @cvetter: Is this an extension, or a small tool / lib to convert?
 This is Python extension of the HERE [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
 codec library to support the legacy polyline format used by 
 [HERE Places (Search) API](https://developer.here.com/documentation/places/dev_guide/topics/guide.html)
@@ -68,6 +69,7 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 ## License
 
+// @cvetter: This is a bit outdated
 Copyright (C) 2019 HERE Europe B.V.
 
 See the [LICENSE](./LICENSE) file in the root of this project for license details.

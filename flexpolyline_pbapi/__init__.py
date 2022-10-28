@@ -11,6 +11,8 @@ from .encoding import encode
 
 from typing import Sequence, Iterable, Union, Tuple, Generator
 
+# @cvetter: I would not offer any function to directly encode/decode HERE Flexpolyline: This just duplicates functionality in the other package
+#           I would just expose the functions for changing flexpolyine <-> Here legacy polyline
 
 def dict_encode(coordinates: Iterable[dict], precision: int=5, third_dim: int=ABSENT, third_dim_precision: int=0) -> str:
     """Encode the sequence of coordinates dicts into a polyline string"""
@@ -69,8 +71,14 @@ def reencode_flex_to_pbapi(encoded: str) -> str:
     return reencoded
 
 
+# @cvetter: This repository duplicates the Here Flexpolyline encoding. Wouldn't it be better to just re-use the official package for Flexpolyline encoding? That way you do not have to test both, and it is clearer to the user which package to use normally
 def reencode_pbapi_to_flex(encoded: str) -> str:
-    """Return a flexible polyline with no third dimension out of a HERE Polyline encoded string.
+    """
+    @cvetter: This is a polyline not a corridor (even if it is sometimes used to define a corridor)
+              "width" is not clearly defined (usually it is called differently)
+              HERE Polyline and HERE geocoding & Search API should most likely be renamed (I guess geocoding / search service have different names legacy vs OLS?) throughout the codebase (see also other comments)
+
+    Return a flexible polyline with no third dimension out of a HERE Polyline encoded string.
     The HERE Polyline potential width changes are ignored: The resulting corridor will be of constant width, expressed
     in HERE geocoding & Search API in a specific request parameter.
     """
