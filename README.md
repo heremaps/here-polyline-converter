@@ -1,4 +1,5 @@
 ![workflow][b]
+[![codecov][c1][c2]]
 
 A tool to encode/decode HERE legacy polyline strings and convert them from/into HERE [Flexible Polyline][1] format.
 
@@ -74,3 +75,5 @@ See the [LICENSE](./LICENSE) file in the root of this project for license detail
 [4]: https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding
 [5]: https://developer.here.com/documentation/routing-api
 [b]: https://github.com/decitre/python-flexpolyline-pbapi/actions/workflows/test.yml/badge.svg
+[c1]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi/branch/main/graph/badge.svg?token=9LPI9T7BMN
+[c2]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi
