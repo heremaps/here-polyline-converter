@@ -7,10 +7,8 @@ A tool to encode/decode HERE legacy polyline strings and convert them from/into 
 [HERE Places API][2] is in maintenance: Developers need to adapt their applications to the newer 
 [HERE Geocoding & Search API][3] to benefit from the features developed after 2018. 
 
-The format of the [`compressedRoute`][4] requests parameter on HERE Places API is not supported by the 
-HERE Geocoding & Search API. This API as well as other HERE APIs like [HERE Routing API][5] use the HERE [Flexible Polyline][1] 
-format to compress sequences of geolocations. 
-
+Note that the HERE Places (Search) API is in maintenance. This Python package can be used to test applications being migrated to 
+the newer [HERE Geocoding & Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html).
 
 
 ## Install
@@ -43,6 +41,7 @@ Expected coordinates order: `(lat, lng[, width])`. Note that `width` is expected
 Decodes a HERE legacy polyline string into an array of coordinates `(lat, lng[, width])`.
 
 
+Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 #### Examples
 
