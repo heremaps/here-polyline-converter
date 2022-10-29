@@ -8,10 +8,8 @@ with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 
 setup(
-    # @cvetter: Is this the name we want to go with? Isn't it weird for a python package to have "python" in the name? and pbapi is not very easy to discover
-    #           I would also not call this an "extension", since it is more of a tool focused on converting data into the new format.
-    name="python-flexpolyline-pbapi",
-    description="Flexible Polyline encoding (PBAPI extension)",
+    name="here-polyline-converter",
+    description="A tool to convert strings between HERE Flexible Polyline format and the (now legacy) format used in HERE Places API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     version="0.2.0",
@@ -33,5 +31,6 @@ setup(
     project_urls={
         "Source": "https://github.com/decitre/python-flexpolyline-pbapi.git"
     },
-    test_suite="test_flexpolyline"
+    install_requires=["flexpolyline"],
+    test_suite="test_converter"
 )
