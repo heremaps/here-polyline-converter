@@ -73,6 +73,6 @@ See the [LICENSE](./LICENSE) file in the root of this project for license detail
 [3]: https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html
 [4]: https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding
 [5]: https://developer.here.com/documentation/routing-api
-[b]: https://github.com/decitre/python-flexpolyline-pbapi/actions/workflows/test.yml/badge.svg
+[b]: https://github.com/heremaps/python-flexpolyline-pbapi/actions/workflows/test.yml/badge.svg
 [c1]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi/branch/main/graph/badge.svg?token=9LPI9T7BMN
 [c2]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi
