@@ -47,8 +47,7 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 #### Examples
 
 ```python
->>>
-import here_search.polyline_converter as pc
+>>> import here_search.polyline_converter as pc
 >>> legacy_polyline = "oz5xJ67i1B1B7PzIhaxL7Y"
 >>> flexible_polyline = pc.convert_legacy_to_flex(legacy_polyline)
 >>> flexible_polyline
