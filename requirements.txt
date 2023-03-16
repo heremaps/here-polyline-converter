@@ -1,1 +1,1 @@
-flexpolyline
+flexpolyline==0.1.0

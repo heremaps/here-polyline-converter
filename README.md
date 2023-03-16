@@ -21,13 +21,13 @@ pip install here-polyline-converter
 ## Usage
 
 
-```
->>> convert_flex_to_legacy(legacy_polyline_string)
+```python
+>>> convert_legacy_to_flex(legacy_polyline_string)
 ```
 
 Transforms a HERE legacy polyline string into a flexible polyline string. The legacy Polyline third dimension (segments width changes) is ignored.
 
-```
+```python
 >>> encode_legacy(iterable)
 ```
 
@@ -35,7 +35,7 @@ Encodes a list of coordinates to the corresponding HERE legacy polyline string r
 Expected coordinates order: `(lat, lng[, width])`. Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 
-```
+```python
 >>> decode_legacy(legacy_polyline_string)
 ```
 
@@ -64,7 +64,7 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 ## License
 
-Copyright (C) 2022 HERE Europe B.V.
+Copyright (C) 2023 HERE Europe B.V.
 
 See the [LICENSE](./LICENSE) file in the root of this project for license details.
 
