@@ -6,6 +6,4 @@ dist/
 *.egg-info/
 .eggs/
 _env*
-.pytest_cache/
-.idea/
-.coverage
+LICENSE

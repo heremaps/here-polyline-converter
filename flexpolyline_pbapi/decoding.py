@@ -1,11 +1,7 @@
-###############################################################################
-#
-# Copyright (c) 2023 HERE Europe B.V.
-#
+# Copyright (C) 2019 HERE Europe B.V.
+# Licensed under MIT, see full license in LICENSE
 # SPDX-License-Identifier: MIT
 # License-Filename: LICENSE
-#
-###############################################################################
 
 from collections import namedtuple
 from typing import Union
