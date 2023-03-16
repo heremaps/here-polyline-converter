@@ -1,7 +1,11 @@
-# Copyright (C) 2019 HERE Europe B.V.
-# Licensed under MIT, see full license in LICENSE
+###############################################################################
+#
+# Copyright (c) 2023 HERE Europe B.V.
+#
 # SPDX-License-Identifier: MIT
 # License-Filename: LICENSE
+#
+###############################################################################
 
 from .encoding import _dict_to_tuple, ABSENT, ALTITUDE, LEVEL, ELEVATION, CUSTOM1, CUSTOM2, THIRD_DIM_MAP
 from .decoding import get_third_dimension
