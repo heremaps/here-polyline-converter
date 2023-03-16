@@ -1,7 +1,11 @@
-# Copyright (C) 2019 HERE Europe B.V.
-# Licensed under MIT, see full license in LICENSE
+###############################################################################
+#
+# Copyright (c) 2023 HERE Europe B.V.
+#
 # SPDX-License-Identifier: MIT
 # License-Filename: LICENSE
+#
+###############################################################################
 
 import unittest
 
