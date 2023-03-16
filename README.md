@@ -1,12 +1,12 @@
 ![workflow][b]
 [![codecov][c1]][c2]
 
-# HERE FlexPolyline and (Legacy) Polyline
+A tool to encode/decode HERE legacy polyline strings and convert them from/into HERE [Flexible Polyline][1] format.
 
-This is Python extension of the HERE [Flexible Polyline](https://github.com/heremaps/flexible-polyline) 
-codec library to support the legacy polyline format used by 
-[HERE Places (Search) API](https://developer.here.com/documentation/places/dev_guide/topics/guide.html)
-for the [`compressedRoute`](https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding) requests parameter.
+# HERE Flexible Polyline versus HERE (legacy) Polyline
+
+[HERE Places API][2] is in maintenance: Developers need to adapt their applications to the newer 
+[HERE Geocoding & Search API][3] to benefit from the features developed after 2018. 
 
 Note that the HERE Places (Search) API is in maintenance. This Python package can be used to test applications being migrated to 
 the newer [HERE Geocoding & Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html).
@@ -25,27 +25,22 @@ pip install here-polyline-converter
 >>> convert_flex_to_legacy(legacy_polyline_string)
 ```
 
-Transforms a HERE polyline string into a flexible polyline string. 
-The HERE Polyline segments width changes are ignored: The resulting corridor will be of constant width, expressed
-in HERE geocoding & Search API as a specific request 
-parameter [`width`](https://developer.here.com/documentation/geocoding-search-api/migration_guide/migration-places/topics/location-context.html#route-and-compressed-route).
+Transforms a HERE legacy polyline string into a flexible polyline string. The legacy Polyline third dimension (segments width changes) is ignored.
 
 ```
 >>> encode_legacy(iterable)
 ```
 
-Encodes a list (or iterator) of coordinates to the corresponding HERE polyline string representation. 
-Coordinate order is `(lat, lng[, width])`. 
+Encodes a list of coordinates to the corresponding HERE legacy polyline string representation. 
+Expected coordinates order: `(lat, lng[, width])`. Note that `width` is expected to be one of `DW`, `HW`, `CW`.
+
 
 ```
 >>> decode_legacy(legacy_polyline_string)
 ```
 
-Decodes a HERE polyline string into an array of coordinates `(lat, lng[, width])`.
+Decodes a HERE legacy polyline string into an array of coordinates `(lat, lng[, width])`.
 
-```
->>> encode_pbapi(iterable)
-```
 
 Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
@@ -69,8 +64,7 @@ Note that `width` is expected to be one of `DW`, `HW`, `CW`.
 
 ## License
 
-// @cvetter: This is a bit outdated
-Copyright (C) 2019 HERE Europe B.V.
+Copyright (C) 2022 HERE Europe B.V.
 
 See the [LICENSE](./LICENSE) file in the root of this project for license details.
 

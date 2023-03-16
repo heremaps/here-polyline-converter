@@ -1,0 +1,5 @@
+excludes:
+  paths:
+    - pattern: "tests/**"
+      reason: "TEST_OF"
+      comment: "Directory only used for testing."
