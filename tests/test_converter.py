@@ -1,7 +1,11 @@
-# Copyright (C) 2022 HERE Europe B.V.
-# Licensed under MIT, see full license in LICENSE
+###############################################################################
+#
+# Copyright (c) 2023 HERE Europe B.V.
+#
 # SPDX-License-Identifier: MIT
 # License-Filename: LICENSE
+#
+###############################################################################
 
 import here_search.polyline_converter as fp
 
