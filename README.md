@@ -1,15 +1,12 @@
 ![workflow][b]
+<!--
 [![codecov][c1]][c2]
+-->
 
-A tool to encode/decode HERE legacy polyline strings and convert them from/into HERE [Flexible Polyline][1] format.
+A tool to encode/decode [HERE legacy polyline][4] strings and convert them from/into HERE [Flexible Polyline][1] format.
 
-# HERE Flexible Polyline versus HERE (legacy) Polyline
-
-[HERE Places API][2] is in maintenance: Developers need to adapt their applications to the newer 
-[HERE Geocoding & Search API][3] to benefit from the features developed after 2018. 
-
-Note that the HERE Places (Search) API is in maintenance. This Python package can be used to test applications being migrated to 
-the newer [HERE Geocoding & Search API](https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html).
+Note that the [HERE Places (Search) API][2] is in maintenance: Developers need to adapt their applications to the newer
+[HERE Geocoding & Search API][3] to benefit from the features developed after 2018.
 
 
 ## Install
@@ -72,7 +69,6 @@ See the [LICENSE](./LICENSE) file in the root of this project for license detail
 [2]: https://developer.here.com/documentation/places/dev_guide/topics/guide.html
 [3]: https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html
 [4]: https://developer.here.com/documentation/places/dev_guide/topics/location-contexts.html#location-contexts__here-polyline-encoding
-[5]: https://developer.here.com/documentation/routing-api
 [b]: https://github.com/heremaps/here-polyline-converter/actions/workflows/test.yml/badge.svg
-[c1]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi/branch/main/graph/badge.svg?token=9LPI9T7BMN
-[c2]: https://codecov.io/gh/heremaps/python-flexpolyline-pbapi
+[c1]: https://codecov.io/gh/heremaps/here-polyline-converter/branch/main/graph/badge.svg?token=9LPI9T7BMN
+[c2]: https://codecov.io/gh/heremaps/here-polyline-converter
