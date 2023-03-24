@@ -1,7 +1,5 @@
 ![workflow][b]
-<!--
 [![codecov][c1]][c2]
--->
 
 A tool to encode/decode [HERE legacy polyline][4] strings and convert them from/into HERE [Flexible Polyline][1] format.
 
